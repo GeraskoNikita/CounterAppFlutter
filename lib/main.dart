@@ -34,7 +34,7 @@ class CounterApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
-      theme: _buildTheme(Brightness.light, FlexColor.goldDarkSecondary),
+      theme: _buildTheme(Brightness.dark, FlexColor.goldDarkSecondary),
       darkTheme: _buildTheme(Brightness.dark, FlexColor.goldDarkPrimary),
       themeMode: ThemeMode.system,
       home: BlocProvider(
