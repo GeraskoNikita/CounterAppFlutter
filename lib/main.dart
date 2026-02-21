@@ -5,70 +5,41 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'CounterBloc.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(const CounterApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class CounterApp extends StatelessWidget {
+  const CounterApp({super.key});
+
+  // Выносим общие настройки в отдельный метод, чтобы не повторяться
+  ThemeData _buildTheme(Brightness brightness, Color seedColor) {
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(seedColor: seedColor, brightness: brightness),
+      textTheme: const TextTheme(
+        displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+        bodyMedium: TextStyle(fontSize: 52, color: Colors.white),
+        bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          fixedSize: const Size(100, 50),
+          backgroundColor: FlexColor.goldLightPrimary,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // 1. Светлая тема
-      theme: ThemeData(
-        useMaterial3: true,
 
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: FlexColor.goldDarkSecondary,
-          brightness: Brightness.dark,
-        ),
-
-        textTheme: const TextTheme(
-          displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-          bodyMedium: TextStyle(fontSize: 52, color: Colors.white),
-          bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            fixedSize: Size(100, 50),
-            backgroundColor: FlexColor.goldLightPrimary,
-          ),
-        ),
-      ),
-
-      // 2. Темная тема
-      darkTheme: ThemeData(
-        useMaterial3: true,
-
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: FlexColor.goldDarkPrimary,
-          brightness: Brightness.dark,
-        ),
-
-        textTheme: const TextTheme(
-          displayLarge: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            // color: Colors.brown,
-          ),
-          bodyMedium: TextStyle(fontSize: 52, color: Colors.white),
-        ),
-
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            fixedSize: Size(100, 50),
-            backgroundColor: FlexColor.goldLightPrimary,
-          ),
-        ),
-      ),
-
-      // Автоматическое переключение темы в зависимости от настроек системы
+      theme: _buildTheme(Brightness.light, FlexColor.goldDarkSecondary),
+      darkTheme: _buildTheme(Brightness.dark, FlexColor.goldDarkPrimary),
       themeMode: ThemeMode.system,
-
       home: BlocProvider(
-        // Создаем экземпляр Bloc и даем к нему доступ дочерним виджетам
         create: (_) => CounterBloc(),
-        child: CounterScreen(),
+        child: const CounterScreen(),
       ),
     );
   }
